@@ -10,20 +10,20 @@ response = urllib.urlopen('http://api.sr.se/api/v2/episodes/index?programid=2000
 data = json.load(response)
 
 # Extract the correct url from json
-url = data['episodes'][0]['downloadpodfile']['url']
+url = data['episodes'][0]['broadcast']['broadcastfiles'][0]['url']
 
 # Extract correct filename
-mp3 = url.split('/')[-1]
+soundFile = url.split('/')[-1]
 
 # Open correct url
 f = urllib.urlopen(url)
 
 # Check if file exists
-if os.path.exists(mp3):
+if os.path.exists(soundFile):
     print("File exists")
 else:
     # Open file and set as binary
-    fh = open(mp3, 'wb')
+    fh = open(soundFile, 'wb')
     # Write binary file to disk
     fh.write(f.read())
     # Close file
