@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import urllib
 import json
@@ -27,3 +28,14 @@ else:
     fh.write(f.read())
     # Close file
     fh.close()
+
+
+# Todo
+#
+# Check if Land- or Sjöväder
+# If there is a new mp3-file, delete old
+# POST to business layer that new file has arrived
+# Download image from SR
+# "imageurltemplate": "http://sverigesradio.se/sida/images/2000/2877928_512_512.jpg"
+# Get title
+#  "title": "Land- och sjöväder 20151016 07:55",
