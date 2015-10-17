@@ -74,5 +74,18 @@ def volumeChange(soundcardId, percentValue):
     out,err = p.communicate()
     return out
 
+
+@app.route("/mute/<soundcardId>/<muteSetting>", methods=['POST'])
+def volumeChange(soundcardId, percentValue):
+    cmd = ["pactl", "set-sink-mute", soundcardId]
+    muteP = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+                              Shell=True,
+                              stderr=subprocess.PIPE,
+                              stdin=subprocess.PIPE)
+    out,err = muteP.communicate()
+    return out
+
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = 'True')
