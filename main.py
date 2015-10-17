@@ -85,7 +85,15 @@ def volumeChange(soundcardId, percentValue):
     out,err = muteP.communicate()
     return out
 
-
+@app.route("/play", methods=['POST'])
+def volumeChange(soundcardId, percentValue):
+    cmd = ["mplayer 54454545.m4a"] # Only example file. Must be replaced by variable
+    playP = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+                              Shell=True,
+                              stderr=subprocess.PIPE,
+                              stdin=subprocess.PIPE)
+    out,err = playP.communicate()
+    return out
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = 'True')
