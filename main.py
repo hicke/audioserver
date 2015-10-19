@@ -64,7 +64,6 @@ def getSoundcards():
 
     return jsonData
 
-
 @app.route("/volume/<soundcardId>/<percentValue>", methods=['POST'])
 def volumeChange(soundcardId, percentValue):
     cmd = ["pactl", "set-sink-volume", soundcardId, percentValue + "%"]
@@ -72,6 +71,50 @@ def volumeChange(soundcardId, percentValue):
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
     out,err = p.communicate()
+    return out
+
+@app.route("/play", methods=['POST'])
+def play():
+    cmd = ["echo \"loadfile /home/hicke/mp3/dub.mp3\" > mplayer/play"]
+    playP = subprocess.Popen(cmd,
+                            shell=True,
+                            stdout = subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE)
+    out,err = playP.communicate()
+    return out
+
+@app.route("/stop", methods=['POST'])
+def stop():
+    cmd = ["echo \"stop\" > mplayer/play"]
+    stop = subprocess.Popen(cmd,
+                            shell=True,
+                            stdout = subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE)
+    #pause.stdin.write('\027' '\027')
+    #pause.stdin.flush()
+    out,err = stop.communicate()
+    return out
+
+@app.route("/pause", methods=['POST'])
+def pause():
+    cmd = ["echo \"p\" > mplayer/play"]
+    pause = subprocess.Popen(cmd,
+                            shell=True,
+                            stdout = subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE)
+    out,err = pause.communicate()
+    return out
+
+@app.route("/mute/<soundcardId>/<muteState>", methods=['POST'])
+def mute(soundcardId, muteState):
+    cmd = ["pactl", "set-sink-mute", soundcardId, muteState]
+    muteP = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE)
+    out,err = muteP.communicate()
     return out
 
 if __name__ == "__main__":
