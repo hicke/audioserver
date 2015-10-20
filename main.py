@@ -73,10 +73,10 @@ def volumeChange(soundcardId, percentValue):
     out,err = p.communicate()
     return out
 
-<<<<<<< HEAD
+
 @app.route("/play", methods=['POST'])
 def play():
-    cmd = ["echo \"loadfile /home/hicke/mp3/dub.mp3\" > mplayer/play"]
+    cmd = ["echo \"loadfile 5487272-hi.m4a\" > pipe"]
     playP = subprocess.Popen(cmd,
                             shell=True,
                             stdout = subprocess.PIPE,
@@ -87,7 +87,7 @@ def play():
 
 @app.route("/stop", methods=['POST'])
 def stop():
-    cmd = ["echo \"stop\" > mplayer/play"]
+    cmd = ["echo \"stop\" > pipe"]
     stop = subprocess.Popen(cmd,
                             shell=True,
                             stdout = subprocess.PIPE,
@@ -100,7 +100,7 @@ def stop():
 
 @app.route("/pause", methods=['POST'])
 def pause():
-    cmd = ["echo \"p\" > mplayer/play"]
+    cmd = ["echo \"p\" > pipe"]
     pause = subprocess.Popen(cmd,
                             shell=True,
                             stdout = subprocess.PIPE,
@@ -118,28 +118,7 @@ def mute(soundcardId, muteState):
     out,err = muteP.communicate()
     return out
 
-=======
 
-@app.route("/mute/<soundcardId>/<muteSetting>", methods=['POST'])
-def volumeChange(soundcardId, percentValue):
-    cmd = ["pactl", "set-sink-mute", soundcardId]
-    muteP = subprocess.Popen(cmd, stdout = subprocess.PIPE,
-                              Shell=True,
-                              stderr=subprocess.PIPE,
-                              stdin=subprocess.PIPE)
-    out,err = muteP.communicate()
-    return out
 
-@app.route("/play", methods=['POST'])
-def volumeChange(soundcardId, percentValue):
-    cmd = ["mplayer 54454545.m4a"] # Only example file. Must be replaced by variable
-    playP = subprocess.Popen(cmd, stdout = subprocess.PIPE,
-                              Shell=True,
-                              stderr=subprocess.PIPE,
-                              stdin=subprocess.PIPE)
-    out,err = playP.communicate()
-    return out
-
->>>>>>> 9116f7b68b1383bca3f986ce06bb98c5ab89c361
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = 'True')

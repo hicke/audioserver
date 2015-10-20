@@ -1,0 +1,31 @@
+MPlayer2 2.0-728-g2c378c7-4 (C) 2000-2012 MPlayer Team
+Cannot open file '/home/hicke/.mplayer/input.conf': No such file or directory
+Failed to open /home/hicke/.mplayer/input.conf.
+Cannot open file '/etc/mplayer/input.conf': No such file or directory
+Failed to open /etc/mplayer/input.conf.
+
+Playing 5487272-hi.m4a.
+Detected file format: QuickTime / MOV (libavformat)
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f65eb677b40]max_analyze_duration 5000000 reached
+[lavf] stream 0: video (mjpeg), -vid 0
+[lavf] stream 1: audio (aac), -aid 0, -alang und
+Clip info:
+ major_brand: mp42
+ minor_version: 0
+ compatible_brands: mp42isom3gp43g2amp41
+ creation_time: 2015-10-15 11:06:37
+ title: Land- och sjöväder 20151016 13:00
+ artist: Sveriges Radio
+ comment:  
+Load subtitles in .
+Selected audio codec: AAC (Advanced Audio Coding) [libavcodec]
+AUDIO: 44100 Hz, 2 ch, floatle, 192.0 kbit/6.80% (ratio: 24000->352800)
+AO: [pulse] 44100Hz 2ch floatle (4 bytes per sample)
+Video: no video
+Starting playback...
+
+
+
+MPlayer interrupted by signal 2 in module: unknown
+
+Exiting... (Quit)
