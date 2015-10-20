@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from flask import Flask
 import subprocess
 import json
+import os
 
 app = Flask(__name__)
 
@@ -8,7 +10,7 @@ app = Flask(__name__)
 def getSoundcards():
     indexCmd = ["pacmd list-sinks | grep index:"]
     indexP = subprocess.Popen(indexCmd,
-                                    shell=True,
+                                    d=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -18,27 +20,16 @@ def getSoundcards():
 
     nameCmd = ["pacmd list-sinks | grep name:"]
     nameP = subprocess.Popen(nameCmd,
-                                    shell=True,
+                                    d=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
     nameRawData, err = nameP.communicate()
     nameRawData = nameRawData.replace('name:','').replace('\t', '').replace('<', '').replace('>', '')
     nameArray = nameRawData.split('\n')
-
-    #volumeCmd = ["pacmd list-sinks | grep volume:"]
-    #volumeP = subprocess.Popen(volumeCmd,
-    #                                shell=True,
-    #                                stdout = subprocess.PIPE,
-    #                                stderr=subprocess.PIPE,
-    #                                stdin=subprocess.PIPE)
-    #volumeRawData, err = volumeP.communicate()
-    #volumeRawData = volumeRawData.replace('volume:','').replace('\t', '')
-    #volumeArray = volumeRawData.split('\n')
-
     mutedCmd = ["pacmd list-sinks | grep muted:"]
     mutedP = subprocess.Popen(mutedCmd,
-                                    shell=True,
+                                    d=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -76,38 +67,43 @@ def volumeChange(soundcardId, percentValue):
 
 @app.route("/play", methods=['POST'])
 def play():
-    cmd = ["echo \"loadfile 5487272-hi.m4a\" > pipe"]
-    playP = subprocess.Popen(cmd,
-                            shell=True,
+    playTest = ["echo \"get_property pause\" > pipe"]
+    if playTest == "ANS_pause=no":
+        cmd = ["echo \"loadfile 5490964-hi.m4a\" > pipe"]
+        playP = subprocess.Popen(cmd,
+                            stdout = subprocess.PIPE,
+                            stderr = subprocess.PIPE,
+                            stdin = subprocess.PIPE)
+        out,err = playP.communicate()
+        return out
+    else: #skriv ett block för att testa
+
+            os.system("echo \"pause\" > pipe")
+
+
+@app.route("/pause", methods=['POST'])
+def pause():
+    cmd = ["echo \"pause\" > pipe"]
+    pauseP = subprocess.Popen(cmd,
                             stdout = subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
-    out,err = playP.communicate()
+    out,err = pauseP.communicate()
     return out
 
 @app.route("/stop", methods=['POST'])
 def stop():
     cmd = ["echo \"stop\" > pipe"]
     stop = subprocess.Popen(cmd,
-                            shell=True,
+                            d=True,
                             stdout = subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
-    #pause.stdin.write('\027' '\027')
-    #pause.stdin.flush()
+    #d.stdin.write('\027' '\027')
+    #d.stdin.flush()
     out,err = stop.communicate()
     return out
 
-@app.route("/pause", methods=['POST'])
-def pause():
-    cmd = ["echo \"p\" > pipe"]
-    pause = subprocess.Popen(cmd,
-                            shell=True,
-                            stdout = subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            stdin=subprocess.PIPE)
-    out,err = pause.communicate()
-    return out
 
 @app.route("/mute/<soundcardId>/<muteState>", methods=['POST'])
 def mute(soundcardId, muteState):
