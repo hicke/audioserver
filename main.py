@@ -2,7 +2,6 @@
 from flask import Flask
 import subprocess
 import json
-import os
 
 app = Flask(__name__)
 
@@ -10,7 +9,6 @@ app = Flask(__name__)
 def getSoundcards():
     indexCmd = ["pacmd list-sinks | grep index:"]
     indexP = subprocess.Popen(indexCmd,
-                                    d=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -20,7 +18,6 @@ def getSoundcards():
 
     nameCmd = ["pacmd list-sinks | grep name:"]
     nameP = subprocess.Popen(nameCmd,
-                                    d=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -29,7 +26,6 @@ def getSoundcards():
     nameArray = nameRawData.split('\n')
     mutedCmd = ["pacmd list-sinks | grep muted:"]
     mutedP = subprocess.Popen(mutedCmd,
-                                    d=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -67,18 +63,14 @@ def volumeChange(soundcardId, percentValue):
 
 @app.route("/play", methods=['POST'])
 def play():
-    playTest = ["echo \"get_property pause\" > pipe"]
-    if playTest == "ANS_pause=no":
-        cmd = ["echo \"loadfile 5490964-hi.m4a\" > pipe"]
-        playP = subprocess.Popen(cmd,
+    cmd = ["echo \"loadfile 5492330-hi.m4a\" > pipe"]
+    playP = subprocess.Popen(cmd,
                             stdout = subprocess.PIPE,
                             stderr = subprocess.PIPE,
                             stdin = subprocess.PIPE)
-        out,err = playP.communicate()
-        return out
-    else: #skriv ett block för att testa
-
-            os.system("echo \"pause\" > pipe")
+    out,err = playP.communicate()
+    state = "playing"
+    return out
 
 
 @app.route("/pause", methods=['POST'])
@@ -95,7 +87,6 @@ def pause():
 def stop():
     cmd = ["echo \"stop\" > pipe"]
     stop = subprocess.Popen(cmd,
-                            d=True,
                             stdout = subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
@@ -108,7 +99,8 @@ def stop():
 @app.route("/mute/<soundcardId>/<muteState>", methods=['POST'])
 def mute(soundcardId, muteState):
     cmd = ["pactl", "set-sink-mute", soundcardId, muteState]
-    muteP = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+    muteP = subprocess.Popen(cmd,
+                            stdout = subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
     out,err = muteP.communicate()
