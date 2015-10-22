@@ -4,6 +4,7 @@
 import urllib
 import json
 import os
+import httplib
 
 # Get json from sr.se
 response = urllib.urlopen('http://api.sr.se/api/v2/episodes/index?programid=2000&format=json&audioquality=hi&page=1&size=1')
@@ -28,14 +29,3 @@ else:
     fh.write(f.read())
     # Close file
     fh.close()
-
-
-# Todo
-#
-# Check if Land- or Sjöväder
-# If there is a new mp3-file, delete old
-# POST to business layer that new file has arrived
-# Download image from SR
-# "imageurltemplate": "http://sverigesradio.se/sida/images/2000/2877928_512_512.jpg"
-# Get title
-#  "title": "Land- och sjöväder 20151016 07:55",
