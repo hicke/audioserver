@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Flask
 import subprocess
 import json
@@ -9,6 +8,7 @@ app = Flask(__name__)
 def getSoundcards():
     indexCmd = ["pacmd list-sinks | grep index:"]
     indexP = subprocess.Popen(indexCmd,
+                                    shell=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -18,14 +18,27 @@ def getSoundcards():
 
     nameCmd = ["pacmd list-sinks | grep name:"]
     nameP = subprocess.Popen(nameCmd,
+                                    shell=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
     nameRawData, err = nameP.communicate()
     nameRawData = nameRawData.replace('name:','').replace('\t', '').replace('<', '').replace('>', '')
     nameArray = nameRawData.split('\n')
+
+    #volumeCmd = ["pacmd list-sinks | grep volume:"]
+    #volumeP = subprocess.Popen(volumeCmd,
+    #                                shell=True,
+    #                                stdout = subprocess.PIPE,
+    #                                stderr=subprocess.PIPE,
+    #                                stdin=subprocess.PIPE)
+    #volumeRawData, err = volumeP.communicate()
+    #volumeRawData = volumeRawData.replace('volume:','').replace('\t', '')
+    #volumeArray = volumeRawData.split('\n')
+
     mutedCmd = ["pacmd list-sinks | grep muted:"]
     mutedP = subprocess.Popen(mutedCmd,
+                                    shell=True,
                                     stdout = subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE)
@@ -51,6 +64,7 @@ def getSoundcards():
 
     return jsonData
 
+
 @app.route("/volume/<soundcardId>/<percentValue>", methods=['POST'])
 def volumeChange(soundcardId, percentValue):
     cmd = ["pactl", "set-sink-volume", soundcardId, percentValue + "%"]
@@ -60,53 +74,38 @@ def volumeChange(soundcardId, percentValue):
     out,err = p.communicate()
     return out
 
-
 @app.route("/play", methods=['POST'])
 def play():
-    cmd = ["echo \"loadfile 5492330-hi.m4a\" > pipe"]
+    cmd = ["echo \"loadfile 5493231-hi.m4a\" > pipe"]
     playP = subprocess.Popen(cmd,
+                            shell = True,
                             stdout = subprocess.PIPE,
                             stderr = subprocess.PIPE,
                             stdin = subprocess.PIPE)
     out,err = playP.communicate()
-    state = "playing"
     return out
-
 
 @app.route("/pause", methods=['POST'])
 def pause():
     cmd = ["echo \"pause\" > pipe"]
     pauseP = subprocess.Popen(cmd,
+                            shell = True,
                             stdout = subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            stdin=subprocess.PIPE)
+                            stderr = subprocess.PIPE,
+                            stdin = subprocess.PIPE)
     out,err = pauseP.communicate()
     return out
 
 @app.route("/stop", methods=['POST'])
 def stop():
     cmd = ["echo \"stop\" > pipe"]
-    stop = subprocess.Popen(cmd,
+    stopP = subprocess.Popen(cmd,
+                            shell = True,
                             stdout = subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            stdin=subprocess.PIPE)
-    #d.stdin.write('\027' '\027')
-    #d.stdin.flush()
-    out,err = stop.communicate()
+                            stderr = subprocess.PIPE,
+                            stdin = subprocess.PIPE)
+    out,err = stopP.communicate()
     return out
-
-
-@app.route("/mute/<soundcardId>/<muteState>", methods=['POST'])
-def mute(soundcardId, muteState):
-    cmd = ["pactl", "set-sink-mute", soundcardId, muteState]
-    muteP = subprocess.Popen(cmd,
-                            stdout = subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            stdin=subprocess.PIPE)
-    out,err = muteP.communicate()
-    return out
-
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = 'True')
