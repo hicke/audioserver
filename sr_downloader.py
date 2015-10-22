@@ -5,6 +5,9 @@ import urllib
 import json
 import os
 import httplib
+import httpClient
+
+
 
 # Get json from sr.se
 response = urllib.urlopen('http://api.sr.se/api/v2/episodes/index?programid=2000&format=json&audioquality=hi&page=1&size=1')
@@ -29,3 +32,5 @@ else:
     fh.write(f.read())
     # Close file
     fh.close()
+    # Only a test route. Should be changed to AT BL route
+    httpClient.httpRequest("POST", "/play")
