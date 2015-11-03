@@ -1,12 +1,5 @@
 #!/usr/bin/python
 # encoding: utf8
-# Todo
-#
-# Check if Land- or Sjöväder
-# If there is a titleLower mp3-file, delete old
-# POST to business layer that titleLower file has arrived
-# Download image from SR
-
 
 import urllib
 import json
