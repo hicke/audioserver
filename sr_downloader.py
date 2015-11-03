@@ -33,4 +33,4 @@ else:
     # Close file
     fh.close()
     # Only a test route. Should be changed to AT BL route
-    httpClient.httpRequest("POST", "/play")
+    #httpClient.httpRequest("POST", "/play")
