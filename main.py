@@ -58,15 +58,22 @@ def getSoundcards():
 @app.route("/volume/<soundcardId>/<percentValue>", methods=['POST'])
 def volumeChange(soundcardId, percentValue):
     cmd = ["pactl", "set-sink-volume", soundcardId, percentValue + "%"]
+<<<<<<< HEAD
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                             stderr = subprocess.PIPE,
                             stdin = subprocess.PIPE)
+=======
+    p = subprocess.Popen(cmd,
+                            stdout = subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE)
+>>>>>>> origin/master
     out,err = p.communicate()
     return out
 
 @app.route("/play", methods=['POST'])
 def play():
-    cmd = ["echo \"loadfile 5493231-hi.m4a\" > pipe"]
+    cmd = ["echo \"loadfile 5537011-hi.m4a\" > pipe"]
     playP = subprocess.Popen(cmd,
                             shell = True,
                             stdout = subprocess.PIPE,
