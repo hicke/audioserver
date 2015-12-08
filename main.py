@@ -26,16 +26,6 @@ def getSoundcards():
     nameRawData = nameRawData.replace('name:','').replace('\t', '').replace('<', '').replace('>', '')
     nameArray = nameRawData.split('\n')
 
-    #volumeCmd = ["pacmd list-sinks | grep volume:"]
-    #volumeP = subprocess.Popen(volumeCmd,
-    #                                shell=True,
-    #                                stdout = subprocess.PIPE,
-    #                                stderr=subprocess.PIPE,
-    #                                stdin=subprocess.PIPE)
-    #volumeRawData, err = volumeP.communicate()
-    #volumeRawData = volumeRawData.replace('volume:','').replace('\t', '')
-    #volumeArray = volumeRawData.split('\n')
-
     mutedCmd = ["pacmd list-sinks | grep muted:"]
     mutedP = subprocess.Popen(mutedCmd,
                                     shell=True,
@@ -69,8 +59,8 @@ def getSoundcards():
 def volumeChange(soundcardId, percentValue):
     cmd = ["pactl", "set-sink-volume", soundcardId, percentValue + "%"]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            stdin=subprocess.PIPE)
+                            stderr = subprocess.PIPE,
+                            stdin = subprocess.PIPE)
     out,err = p.communicate()
     return out
 

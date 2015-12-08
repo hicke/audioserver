@@ -4,6 +4,7 @@
 import urllib
 import json
 import os
+from httpClient import httpRequest
 
 # Get json from sr.se
 response = urllib.urlopen('http://api.sr.se/api/v2/episodes/index?programid=2000&format=json&audioquality=hi&page=1&size=1')
@@ -28,7 +29,7 @@ else:
     fh.write(f.read())
     # Close file
     fh.close()
-
+    httpRequest('POST', '/play')
 
 # Todo
 #
