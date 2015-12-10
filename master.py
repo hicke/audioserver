@@ -7,11 +7,3 @@ class DumpList(object):
         self.stop = stop
     def Looper(self):
         return self.stop
-
-DumpList(2).Looper()
-# class FileLooper()
-#     def main(self):
-#         text_file = open("Output.txt", "w")
-#         for i in range(1, 32):
-#             print "Dag: " + str(i) + '\n'
-#     text_file.close()
